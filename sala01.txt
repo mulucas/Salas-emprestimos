@@ -1,0 +1,7 @@
+Nome,Matricula,Horario de entrada,Horario de Saida,piloto,marcador
+sala03,28,gustavo@dicasdeprogramcao.com.br,macau,s,s
+sala03,35,joao@dicasdejava.com.br,assu,s,s
+sala03,23,maria@dicasdeprogramacao.com.br,itaja,s,s
+sala03,25,ana@dicasdejava.com.br,londres,s,s
+jijijijijjj,jijijiji,jijijiji,jijijijijiji,NÃO,NÃO
+cskmamkcmakmk,mkmkmdkzmkmmqkmk,mkkmkmk,mkmkmk,SIM,SIM

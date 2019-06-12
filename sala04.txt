@@ -1,0 +1,10 @@
+Nome,Matricula,Horario de entrada,Horario de Saida,piloto,marcador
+camcmawocmwam,owcoamocmwamc,cwomoamomaom,cowmmamaom,s,s
+camcmawocmwam,owcoamocmwamc,cwomoamomaom,cowmmamaom,s,s
+camcmawocmwam,owcoamocmwamc,cwomoamomaom,cowmmamaom,s,s
+camcmawocmwam,owcoamocmwamc,cwomoamomaom,cowmmamaom,s,s
+jiijijijijijiji,jijijijijiji,jijijijijij,ijijijjijji,SIM,SIM
+jiijijijijijiji,jijijijijiji,jijijijijij,ijijijjijji,NÃO,NÃO
+gdgdgdgdg,dgdgdgdgdg,gdgdgdgdgd,gdgdgdgd,SIM,NÃO
+gdgdgdgdg,dgdgdgdgdg,gdgdgdgdgd,gdgdgdgd,NÃO,SIM
+lucas,2019222290,14:50,18:00,NÃO,NÃO
