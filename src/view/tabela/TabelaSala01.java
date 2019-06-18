@@ -3,7 +3,6 @@ package view.tabela;
 import java.awt.BorderLayout;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -24,7 +23,7 @@ public class TabelaSala01 extends JFrame {
 	private JButton btnCadastrarHorario = null;
 	private JScrollPane scrlTabela = null;
 	private JTable tblTabela = null;
-	String salaRecebida;
+	private String salaRecebida;
 
 	public TabelaSala01(String sala) {
 		super();
@@ -34,8 +33,7 @@ public class TabelaSala01 extends JFrame {
 
 	/**
 	 * Este metodo inicia a janela
-	 * 
-	 * @return void
+	 * @return o metodo ler do CVS
 	 */
 	private void initialize() {
 		this.setSize(900, 600);
@@ -48,7 +46,6 @@ public class TabelaSala01 extends JFrame {
 
 	/**
 	 * Este metodo inicia o painel
-	 * 
 	 * @return painel
 	 */
 	private JPanel getJContentPane() {
@@ -63,7 +60,6 @@ public class TabelaSala01 extends JFrame {
 
 	/**
 	 * Este metodo inicia o botao
-	 * 
 	 * @return JButton
 	 */
 	private JButton getBtnLerDoCvs() {
@@ -85,42 +81,24 @@ public class TabelaSala01 extends JFrame {
 	 * Este metodo ler do arquivo selecionado
 	 */
 	protected void lerDoCVS() {
-		File file = new File(salaRecebida + ".txt");
-
-		// Se o arquivo nao existir, ele gera
-		if (!file.exists()) {
-			try {
-				file.createNewFile();
-			} catch (IOException e) {
-				// JOptionPane.showInputDialog(null, "nao criou cara");
-				e.printStackTrace();
-			}
-		}
+		String path = System.getProperty("user.home");
 		try {
 			BufferedReader reader = null;
 			try {
 				if (salaRecebida.equals("sala01")) {
-					reader = new BufferedReader(new FileReader(salaRecebida + ".txt"));
+					reader = new BufferedReader(new FileReader(path + "/" + salaRecebida + ".txt"));
 				} else if (salaRecebida.equals("sala02")) {
-					reader = new BufferedReader(new FileReader(salaRecebida + ".txt"));
+					reader = new BufferedReader(new FileReader(path + "/" + salaRecebida + ".txt"));
 				} else if (salaRecebida.equals("sala03")) {
-					reader = new BufferedReader(new FileReader(salaRecebida + ".txt"));
+					reader = new BufferedReader(new FileReader(path + "/" + salaRecebida + ".txt"));
 				} else if (salaRecebida.equals("sala04")) {
-					reader = new BufferedReader(new FileReader(salaRecebida + ".txt"));
+					reader = new BufferedReader(new FileReader(path + "/" + salaRecebida + ".txt"));
 				} else if (salaRecebida.equals("sala05")) {
-					reader = new BufferedReader(new FileReader(salaRecebida + ".txt"));
+					reader = new BufferedReader(new FileReader(path + "/" + salaRecebida + ".txt"));
 				}
 
 				// Leitura do cabecalho
 				String linha = reader.readLine();
-				if (linha == null) {
-					FileWriter fw = new FileWriter(file.getAbsoluteFile());
-					BufferedWriter bw = new BufferedWriter(fw);
-
-					// Escreve e fecha arquivo
-					bw.write("Nome,Matricula,Horario de entrada,Horario de Saida,piloto,marcador");
-					bw.close();
-				}
 
 				// Criamos nosso model com o cabecalho
 				// O split separa as colunas. Ler a primeira linha
@@ -140,11 +118,18 @@ public class TabelaSala01 extends JFrame {
 				}
 			}
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(this, "iniciando o arquivo para guardar todos os horarios");
+			BufferedWriter bw;
+			try {
+				bw = new BufferedWriter(new FileWriter(path + "/" + salaRecebida + ".txt", true));
+				// Escreve e fecha arquivo
+				bw.write("Nome,Matricula,Horario de entrada,Horario de Saida,Piloto,Apagador");
+				bw.close();
+				JOptionPane.showMessageDialog(this, "iniciando o arquivo para guardar todos os horarios");
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 		}
-
 	}
-
 	private JScrollPane getScrlTabela() {
 		if (scrlTabela == null) {
 			scrlTabela = new JScrollPane();
@@ -159,8 +144,4 @@ public class TabelaSala01 extends JFrame {
 		}
 		return tblTabela;
 	}
-
-//    public static void main(String[] args) {
-//        new TabelaSala01().setVisible(true);
-//    }
 }
