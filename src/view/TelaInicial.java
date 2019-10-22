@@ -8,7 +8,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import view.tabela.TabelaSala01;
+import view.tabela.TabelaSala;
 
 import javax.swing.JButton;
 

@@ -9,7 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import view.tabela.TabelaSala01;
+import view.tabela.TabelaSala;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -45,6 +45,11 @@ public class Inicio extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
+		JLabel lblControleDeSalas = new JLabel("CONTROLE DE SALAS");
+		lblControleDeSalas.setFont(new Font("Verdana", Font.PLAIN, 26));
+		lblControleDeSalas.setHorizontalAlignment(SwingConstants.CENTER);
+		lblControleDeSalas.setBounds(150, 24, 289, 58);
+		contentPane.add(lblControleDeSalas);
 		
 		JButton btnSala1 = new JButton("sala01");
 		btnSala1.setBounds(50, 108, 89, 53);
@@ -92,21 +97,24 @@ public class Inicio extends JFrame {
 				abreTabela(btnSala5.getText());
 			}
 		});
-		//ImageIcon icone = new ImageIcon(getClass().getResource("/dados/calculadora.png"));
-		//setIconImage(icone.getImage());
+		
 		ImageIcon logo = new ImageIcon(getClass().getResource("/ufersa.png"));
 		JLabel lblNewLabel_4 = new JLabel(logo);
 		lblNewLabel_4.setBounds(10, 113, 560, 225);
 		contentPane.add(lblNewLabel_4);
 		
-		JLabel lblControleDeSalas = new JLabel("CONTROLE DE SALAS");
-		lblControleDeSalas.setFont(new Font("Verdana", Font.PLAIN, 26));
-		lblControleDeSalas.setHorizontalAlignment(SwingConstants.CENTER);
-		lblControleDeSalas.setBounds(150, 24, 289, 58);
-		contentPane.add(lblControleDeSalas);
+		JButton btnEmprestimosMateriais = new JButton("Materiais");
+		btnEmprestimosMateriais.setBounds(240, 278, 109, 53);
+		contentPane.add(btnEmprestimosMateriais);
+		btnEmprestimosMateriais.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				abreTabela(btnEmprestimosMateriais.getText());
+			}
+		});
 	}
 	private void abreTabela(String nSala) {
-		TabelaSala01 sala01 = new TabelaSala01(nSala);
+		TabelaSala sala01 = new TabelaSala(nSala);
 		sala01.setVisible(true);
 	}
 }
