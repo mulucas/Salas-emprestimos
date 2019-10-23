@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -24,6 +25,7 @@ public class TabelaSala extends JFrame {
 	private JPanel painel = null;
 	private JButton btnCadastrarHorario = null;
 	private JButton btnApagarHorarios = null;
+	private JButton btnDevolverMaterial = null;
 	private JScrollPane scrlTabela = null;
 	private JTable tblTabela = null;
 	private String salaRecebida;
@@ -61,6 +63,9 @@ public class TabelaSala extends JFrame {
 
 			JPanel btnPnl = new JPanel(new FlowLayout(FlowLayout.CENTER));
 			btnPnl.add(getBtnLerDoCvs());
+			if (salaRecebida.equals("Materiais")) {
+				btnPnl.add(getBtnDevolverDoCvs());
+			}
 			btnPnl.add(getBtnApagarDoCvs());
 
 			painel.add(btnPnl, BorderLayout.SOUTH);
@@ -91,7 +96,6 @@ public class TabelaSala extends JFrame {
 
 	/**
 	 * Este metodo inicia o botao de APAGAR na Janela
-	 * 
 	 * @return JButton
 	 */
 	private JButton getBtnApagarDoCvs() {
@@ -111,9 +115,35 @@ public class TabelaSala extends JFrame {
 		}
 		return btnApagarHorarios;
 	}
+	
+	/**
+	 * Este metodo inicia o botao de Devolver na Janela somente dos materiais
+	 * @return JButton
+	 */
+	private JButton getBtnDevolverDoCvs() {
+		if (btnDevolverMaterial == null) {
+			btnDevolverMaterial = new JButton();
+			btnDevolverMaterial.setText("Devolver Material");
+			btnDevolverMaterial.addActionListener(new java.awt.event.ActionListener() {
+				public void actionPerformed(java.awt.event.ActionEvent e) {
+					int resposta = JOptionPane.showConfirmDialog(null, "Deseja realmente devolver esse material?",
+							"Confirmação", JOptionPane.YES_NO_OPTION);
+					if (resposta == JOptionPane.YES_OPTION) {
+						System.out.println(tblTabela.getModel().getValueAt(tblTabela.getSelectedRow() ,5));
+						try {
+							alteraLinha(tblTabela.getSelectedRow());
+						} catch (IOException e1) {
+							e1.printStackTrace();
+						}
+					}
+				}
+			});
+		}
+		return btnDevolverMaterial;
+	}
 
 	/**
-	 * Este metodo ler do arquivo selecionado
+	 * Este metodo ler do arquivo .txt a sala selecionada, ou o material
 	 */
 	protected void lerDoCVS() {
 
@@ -158,7 +188,7 @@ public class TabelaSala extends JFrame {
 			BufferedWriter bw;
 			String palavrasDasColunas = "";
 			if (salaRecebida.equals("Materiais")) {
-				palavrasDasColunas = "Nome,Matricula,Data,Piloto,Apagador";
+				palavrasDasColunas = "Nome,Matricula,Data,Piloto,Apagador,Status";
 			} else {
 				palavrasDasColunas = "Nome,Matricula,Horario de entrada,Horario de Saida,Piloto,Apagador";
 			}
@@ -173,7 +203,9 @@ public class TabelaSala extends JFrame {
 			}
 		}
 	}
-
+	/*
+	 * apaga toda a lista da tabela
+	 */
 	protected void apagaLista() {
 		Writer out;
 		try {
@@ -182,13 +214,32 @@ public class TabelaSala extends JFrame {
 			out.write("");
 			out.flush();
 
-			/*
-			 * //escreve out.write("ABC"); out.flush(); out.close();
-			 */
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	/*
+	 * 
+	 */
+	public void alteraLinha(int numeroDaLinha) throws IOException {
+	    String arquivo = path + "/" + salaRecebida + ".txt";
+	    
+	    BufferedReader reader = new BufferedReader(new FileReader(arquivo));
+	    BufferedWriter bw = new BufferedWriter(new FileWriter(arquivo));
+
+	    String linha;
+	    int i = 0;
+	    while ((linha = reader.readLine()) != null) {
+	        if (i == numeroDaLinha) {
+	            linha = linha.replace("emprestrado", "devolvido");
+	            break;
+	        }
+	        i++;
+	        bw.write(linha + "\n");
+	    }
+
+	    bw.close();        
+	    reader.close();
 
 	}
 
@@ -203,6 +254,9 @@ public class TabelaSala extends JFrame {
 	private JTable getTblTabela() {
 		if (tblTabela == null) {
 			tblTabela = new JTable();
+			if (salaRecebida.equals("Materiais")) {
+				tblTabela.setDefaultRenderer(Object.class, new ColorRender(1, 5));
+			}
 		}
 		return tblTabela;
 	}

@@ -210,7 +210,7 @@ public class Cadastro extends JFrame {
 
 			// Escreve e fecha arquivo
 			gravarArq.write("\r\n" + txtNome.getText() + "," + txtMatricula.getText() + "," + txtHoraEntrada.getText()
-					+ "," + piloto + "," + marcador);
+					+ "," + piloto + "," + marcador+ "," + "emprestado");
 			gravarArq.close();
 
 			// exibe a tabela com os dados atualizados
