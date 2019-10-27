@@ -5,10 +5,13 @@ import java.awt.FlowLayout;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.Writer;
+import java.util.Scanner;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -30,6 +33,7 @@ public class TabelaSala extends JFrame {
 	private JTable tblTabela = null;
 	private String salaRecebida;
 	private String path = System.getProperty("user.home");
+	private BufferedReader reader;
 
 	public TabelaSala(String sala) {
 		super();
@@ -96,6 +100,7 @@ public class TabelaSala extends JFrame {
 
 	/**
 	 * Este metodo inicia o botao de APAGAR na Janela
+	 * 
 	 * @return JButton
 	 */
 	private JButton getBtnApagarDoCvs() {
@@ -115,9 +120,10 @@ public class TabelaSala extends JFrame {
 		}
 		return btnApagarHorarios;
 	}
-	
+
 	/**
 	 * Este metodo inicia o botao de Devolver na Janela somente dos materiais
+	 * 
 	 * @return JButton
 	 */
 	private JButton getBtnDevolverDoCvs() {
@@ -129,12 +135,9 @@ public class TabelaSala extends JFrame {
 					int resposta = JOptionPane.showConfirmDialog(null, "Deseja realmente devolver esse material?",
 							"Confirmação", JOptionPane.YES_NO_OPTION);
 					if (resposta == JOptionPane.YES_OPTION) {
-						System.out.println(tblTabela.getModel().getValueAt(tblTabela.getSelectedRow() ,5));
-						try {
-							alteraLinha(tblTabela.getSelectedRow());
-						} catch (IOException e1) {
-							e1.printStackTrace();
-						}
+						// System.out.println(tblTabela.getModel().getValueAt(tblTabela.getSelectedRow(),5));
+						excluiLinha(tblTabela.getSelectedRow());
+						// alteraLinha("ooooo,2222,22/22/2222,NAO,NAO,emprestado");
 					}
 				}
 			});
@@ -203,6 +206,7 @@ public class TabelaSala extends JFrame {
 			}
 		}
 	}
+
 	/*
 	 * apaga toda a lista da tabela
 	 */
@@ -218,29 +222,47 @@ public class TabelaSala extends JFrame {
 			e.printStackTrace();
 		}
 	}
+
 	/*
 	 * 
 	 */
-	public void alteraLinha(int numeroDaLinha) throws IOException {
-	    String arquivo = path + "/" + salaRecebida + ".txt";
-	    
-	    BufferedReader reader = new BufferedReader(new FileReader(arquivo));
-	    BufferedWriter bw = new BufferedWriter(new FileWriter(arquivo));
-
-	    String linha;
-	    int i = 0;
-	    while ((linha = reader.readLine()) != null) {
-	        if (i == numeroDaLinha) {
-	            linha = linha.replace("emprestrado", "devolvido");
-	            break;
-	        }
-	        i++;
-	        bw.write(linha + "\n");
-	    }
-
-	    bw.close();        
-	    reader.close();
-
+	public void excluiLinha(int linhadelete) {
+		try {
+			File inFile = new File(path + "/" + salaRecebida + ".txt");
+			if (!inFile.isFile()) {
+				System.out.println("O caminho passado não existe!");
+				return;
+			}
+			if (linhadelete == -1) {
+				JOptionPane.showMessageDialog(null, "Voce nao selecionou uma linha para exclusao");
+			} else {
+				dispose();
+				// Le o arquivo
+				FileReader ler = new FileReader(path + "/" + salaRecebida + ".txt");
+				reader = new BufferedReader(ler);
+				String linha, guardaConteudo = "";
+				int i = 0;
+				while ((linha = reader.readLine()) != null) {
+					//compara a linha selecionada com as vezes do i incrementado
+					if (!(i == linhadelete + 1)) {
+						guardaConteudo += linha + "\n";
+					}
+					i++;
+				}
+				// Prepara para escrever no arquivo
+				FileWriter fw = new FileWriter(path + "/" + salaRecebida + ".txt");
+				BufferedWriter bw = new BufferedWriter(fw);
+				// Escreve e fecha arquivo
+				bw.write(guardaConteudo);
+				bw.close();
+				TabelaSala tab = new TabelaSala("Materiais");
+				tab.setVisible(true);
+			}
+		} catch (FileNotFoundException arq) {
+			arq.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private JScrollPane getScrlTabela() {
@@ -254,9 +276,6 @@ public class TabelaSala extends JFrame {
 	private JTable getTblTabela() {
 		if (tblTabela == null) {
 			tblTabela = new JTable();
-			if (salaRecebida.equals("Materiais")) {
-				tblTabela.setDefaultRenderer(Object.class, new ColorRender(1, 5));
-			}
 		}
 		return tblTabela;
 	}
