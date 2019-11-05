@@ -9,7 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import view.tabela.TabelaSala;
+import tabela.TabelaSala;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;

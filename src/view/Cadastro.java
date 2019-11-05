@@ -5,7 +5,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.MaskFormatter;
 
-import view.tabela.TabelaSala;
+import tabela.TabelaSala;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -34,11 +34,8 @@ public class Cadastro extends JFrame {
 	private JCheckBox cbxPiloto;
 	private JCheckBox chckApagador;
 
-	public Cadastro() {
-
-	}
-
 	public Cadastro(String sala) {
+		System.out.println("tela cadastro");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 369, 434);
 		setResizable(false);
@@ -66,13 +63,13 @@ public class Cadastro extends JFrame {
 		txtMatricula.setColumns(10);
 		txtMatricula.setBounds(25, 145, 305, 20);
 		contentPane.add(txtMatricula);
-		
+
 		if (sala.equals("Materiais")) {
 			JLabel lblEmprestimo = new JLabel("EMPRESTIMO");
 			lblEmprestimo.setFont(new Font("Microsoft PhagsPa", Font.BOLD, 20));
 			lblEmprestimo.setBounds(98, 11, 160, 14);
 			contentPane.add(lblEmprestimo);
-			
+
 			JLabel lblHorarioDeEntrada = new JLabel("Data:");
 			lblHorarioDeEntrada.setFont(new Font("Tahoma", Font.BOLD, 14));
 			lblHorarioDeEntrada.setBounds(25, 176, 139, 14);
@@ -83,7 +80,7 @@ public class Cadastro extends JFrame {
 			} catch (ParseException e1) {
 				e1.printStackTrace();
 			}
-		}else {
+		} else {
 			JLabel lblHorarioDeEntrada = new JLabel("Horario de entrada:");
 			lblHorarioDeEntrada.setFont(new Font("Tahoma", Font.BOLD, 14));
 			lblHorarioDeEntrada.setBounds(25, 176, 139, 14);
@@ -114,11 +111,11 @@ public class Cadastro extends JFrame {
 			lblResevarSala.setBounds(98, 11, 160, 14);
 			contentPane.add(lblResevarSala);
 		}
-		
+
 		txtHoraEntrada.setColumns(10);
 		txtHoraEntrada.setBounds(25, 201, 139, 20);
 		contentPane.add(txtHoraEntrada);
-		
+
 		JLabel lblDados = new JLabel("DADOS");
 		lblDados.setFont(new Font("Tahoma", Font.BOLD, 14));
 		lblDados.setBounds(145, 36, 95, 14);
@@ -144,35 +141,27 @@ public class Cadastro extends JFrame {
 		btnConfirmar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-								
+
 				if (txtNome.getText().trim().equals("")) {
 					JOptionPane.showMessageDialog(null, "campo nome vazio");
 				} else if (txtMatricula.getText().trim().equals("")) {
 					JOptionPane.showMessageDialog(null, "campo matricula vazio");
 				} else if (txtHoraEntrada.getText().trim().equals("")) {
 					JOptionPane.showMessageDialog(null, "campo de horario de entrada vazio");
-				//} else if (txtHoraSaida.getText().trim().equals("")) {
-					//JOptionPane.showMessageDialog(null, "campo de horario de saida vazio");
-				}
-				else {
+				} else {
+					// chama o metodo de armazenar e passa a sala por parametro
 					if (sala.equals("sala01")) {
 						armazenaSala(sala);
-						// metodo para cadastrar na sala 01
 					} else if (sala.equals("sala02")) {
 						armazenaSala(sala);
-						// metodo para cadastrar na sala 02
 					} else if (sala.equals("sala03")) {
 						armazenaSala(sala);
-						// metodo para cadastrar na sala 02
 					} else if (sala.equals("sala04")) {
 						armazenaSala(sala);
-						// metodo para cadastrar na sala 02
 					} else if (sala.equals("sala05")) {
 						armazenaSala(sala);
-						// metodo para cadastrar na sala 02
 					} else if (sala.equals("Materiais")) {
-						emprestimoMateriais(sala);
-						// metodo para cadastrar na sala 02
+						armazenaSala(sala);
 					} else {
 						JOptionPane.showMessageDialog(null, "nao ta pegando o numero da sala certo aqui em cadastro");
 					}
@@ -189,40 +178,6 @@ public class Cadastro extends JFrame {
 				dispose();
 			}
 		});
-	}
-	public void emprestimoMateriais(String sala) {
-		String piloto, marcador;
-		try {
-			if (cbxPiloto.isSelected()) {
-				piloto = "SIM";
-			} else {
-				piloto = "NAO";
-			}
-			if (chckApagador.isSelected()) {
-				marcador = "SIM";
-			} else {
-				marcador = "NAO";
-			}
-
-			// Prepara para escrever no arquivo
-			String path = System.getProperty("user.home");
-			BufferedWriter gravarArq = new BufferedWriter(new FileWriter(path + "/" + sala + ".txt", true));
-
-			// Escreve e fecha arquivo
-			gravarArq.write("\r\n" + txtNome.getText() + "," + txtMatricula.getText() + "," + txtHoraEntrada.getText()
-					+ "," + piloto + "," + marcador+ "," + "emprestado");
-			gravarArq.close();
-
-			// exibe a tabela com os dados atualizados
-			TabelaSala sala01 = new TabelaSala(sala);
-			this.dispose();
-			sala01.setVisible(true);
-
-		} catch (IOException erro1) {
-			JOptionPane.showMessageDialog(this, "erro1 - deu erro no metodo emprestimoMateriais - classe cadastro");
-		} catch (Exception erro2) {
-			JOptionPane.showMessageDialog(this, "erro2 - deu erro no metodo emprestimoMateriais - classe cadastro");
-		}
 	}
 
 	public void armazenaSala(String sala) {
@@ -244,8 +199,14 @@ public class Cadastro extends JFrame {
 			BufferedWriter gravarArq = new BufferedWriter(new FileWriter(path + "/" + sala + ".txt", true));
 
 			// Escreve e fecha arquivo
-			gravarArq.write("\r\n" + txtNome.getText() + "," + txtMatricula.getText() + "," + txtHoraEntrada.getText()
-					+ "," + txtHoraSaida.getText() + "," + piloto + "," + marcador);
+			if (sala.equals("Materiais")) {
+				gravarArq.write("\r\n" + txtNome.getText() + "," + txtMatricula.getText() + ","
+						+ txtHoraEntrada.getText() + "," + piloto + "," + marcador + "," + "emprestado");
+			} else {
+				gravarArq.write("\r\n" + txtNome.getText() + "," + txtMatricula.getText() + ","
+						+ txtHoraEntrada.getText() + "," + txtHoraSaida.getText() + "," + piloto + "," + marcador);
+			}
+
 			gravarArq.close();
 
 			// exibe a tabela com os dados atualizados
@@ -254,9 +215,9 @@ public class Cadastro extends JFrame {
 			sala01.setVisible(true);
 
 		} catch (IOException erro1) {
-			JOptionPane.showMessageDialog(this, "erro1 - deu erro no metodo armazenaSala - classe cadastro");
+			JOptionPane.showMessageDialog(this, "erro1 - deu erro no metodo emprestimoMateriais - classe cadastro");
 		} catch (Exception erro2) {
-			JOptionPane.showMessageDialog(this, "erro2 - deu erro no metodo armazenaSala - classe cadastro");
+			JOptionPane.showMessageDialog(this, "erro2 - deu erro no metodo emprestimoMateriais - classe cadastro");
 		}
 	}
 }

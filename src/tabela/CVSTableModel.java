@@ -1,4 +1,4 @@
-package view.tabela;
+package tabela;
 
 import java.util.ArrayList;
 import java.util.List;

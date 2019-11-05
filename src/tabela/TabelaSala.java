@@ -1,4 +1,4 @@
-package view.tabela;
+package tabela;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -9,9 +9,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.io.Writer;
-import java.util.Scanner;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -38,15 +36,6 @@ public class TabelaSala extends JFrame {
 	public TabelaSala(String sala) {
 		super();
 		salaRecebida = sala;
-		initialize();
-	}
-
-	/**
-	 * Este metodo inicia a janela
-	 * 
-	 * @return o metodo ler do CVS
-	 */
-	private void initialize() {
 		this.setSize(900, 600);
 		this.setResizable(false);
 		this.setContentPane(getJContentPane());
@@ -57,7 +46,6 @@ public class TabelaSala extends JFrame {
 
 	/**
 	 * Este metodo inicia o painel
-	 * 
 	 * @return painel
 	 */
 	private JPanel getJContentPane() {
@@ -79,8 +67,7 @@ public class TabelaSala extends JFrame {
 	}
 
 	/**
-	 * Este metodo inicia o botao de CADASTRAR na Janela
-	 * 
+	 * Este metodo inicia o botao de CADASTRAR na Janela 
 	 * @return JButton
 	 */
 	private JButton getBtnLerDoCvs() {
@@ -224,9 +211,9 @@ public class TabelaSala extends JFrame {
 	}
 
 	/*
-	 * 
+	 * exclui uma linha selecionada na tabela
 	 */
-	public void excluiLinha(int linhadelete) {
+	protected void excluiLinha(int linhadelete) {
 		try {
 			File inFile = new File(path + "/" + salaRecebida + ".txt");
 			if (!inFile.isFile()) {
